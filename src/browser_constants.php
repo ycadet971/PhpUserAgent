@@ -30,6 +30,7 @@ namespace donatj\UserAgentParser\Browser {
 	const MSNBOT_MEDIA        = 'msnbot-media';
 	const NETFRONT            = 'NetFront';
 	const NINTENDOBROWSER     = 'NintendoBrowser';
+	const OCULUSBROWSER       = 'OculusBrowser';
 	const OPERA               = 'Opera';
 	const OPERA_NEXT          = 'Opera Next';
 	const PUFFIN              = 'Puffin';

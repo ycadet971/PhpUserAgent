@@ -57,9 +57,9 @@ function parse_user_agent( $u_agent = null ) {
 	}
 
 	if( $platform == 'linux-gnu' || $platform == 'X11' ) {
-		$platform = 'Linux';
+		$platform = Platform\LINUX;
 	} elseif( $platform == 'CrOS' ) {
-		$platform = 'Chrome OS';
+		$platform = Platform\CHROME_OS;
 	}
 
 	preg_match_all('%(?P<browser>Camino|Kindle(\ Fire)?|Firefox|Iceweasel|IceCat|Safari|MSIE|Trident|AppleWebKit|
@@ -108,24 +108,24 @@ function parse_user_agent( $u_agent = null ) {
 	$key = 0;
 	$val = '';
 	if( $browser == 'Iceweasel' || strtolower($browser) == 'icecat' ) {
-		$browser = 'Firefox';
+		$browser = Browser\FIREFOX;
 	} elseif( $find('Playstation Vita', $key) ) {
-		$platform = 'PlayStation Vita';
-		$browser  = 'Browser';
+		$platform = Platform\PLAYSTATION_VITA;
+		$browser  = Browser\BROWSER;
 	} elseif( $find(array( 'Kindle Fire', 'Silk' ), $key, $val) ) {
 		$browser  = $val == 'Silk' ? 'Silk' : 'Kindle';
-		$platform = 'Kindle Fire';
+		$platform = Platform\KINDLE_FIRE;
 		if( !($version = $result[UAP_KEY_VERSION][$key]) || !is_numeric($version[0]) ) {
 			$version = $result[UAP_KEY_VERSION][array_search('Version', $result[UAP_KEY_BROWSER])];
 		}
 	} elseif( $find('NintendoBrowser', $key) || $platform == 'Nintendo 3DS' ) {
-		$browser = 'NintendoBrowser';
+		$browser = Browser\NINTENDOBROWSER;
 		$version = $result[UAP_KEY_VERSION][$key];
 	} elseif( $find('Kindle', $key, $platform) ) {
 		$browser = $result[UAP_KEY_BROWSER][$key];
 		$version = $result[UAP_KEY_VERSION][$key];
 	} elseif( $find('OPR', $key) ) {
-		$browser = 'Opera Next';
+		$browser = Browser\OPERA_NEXT;
 		$version = $result[UAP_KEY_VERSION][$key];
 	} elseif( $find('Opera', $key, $browser) ) {
 		$find('Version', $key);
@@ -137,35 +137,35 @@ function parse_user_agent( $u_agent = null ) {
 			if( ctype_upper($part) ) {
 				$version = substr($version, 0, -2);
 
-				$flags = array( 'IP' => 'iPhone', 'IT' => 'iPad', 'AP' => 'Android', 'AT' => 'Android', 'WP' => 'Windows Phone', 'WT' => 'Windows' );
+				$flags = array( 'IP' => Platform\IPHONE, 'IT' => Platform\IPAD, 'AP' => Platform\ANDROID,
+								'AT' => Platform\ANDROID, 'WP' => Platform\WINDOWS_PHONE, 'WT' => Platform\WINDOWS );
 				if( isset($flags[$part]) ) {
 					$platform = $flags[$part];
 				}
 			}
 		}
 	} elseif( $find('YaBrowser', $key, $browser) ) {
-		$browser = 'Yandex';
-		$version = $result['version'][$key];
-	} elseif( $find(array( 'IEMobile', 'Edge', 'Midori', 'Vivaldi', 'OculusBrowser', 'SamsungBrowser', 'Valve Steam Tenfoot', 'Chrome', 'HeadlessChrome' ), $key, $browser) ) {
+		$browser = Browser\YANDEX;
+		$version = $result[UAP_KEY_VERSION][$key];
+	} elseif( $find(array( Browser\IEMOBILE, Browser\EDGE, Browser\MIDORI, Browser\VIVALDI, Browser\OCULUSBROWSER, Browser\SAMSUNGBROWSER, Browser\VALVE_STEAM_TENFOOT, Browser\CHROME, Browser\HEADLESSCHROME ), $key, $browser) ) {
 		$version = $result[UAP_KEY_VERSION][$key];
 	} elseif( $rv_result && $find('Trident', $key) ) {
-		$browser = 'MSIE';
+		$browser = Browser\MSIE;
 		$version = $rv_result;
 	} elseif( $find('UCBrowser', $key) ) {
-		$browser = 'UC Browser';
+		$browser = Browser\UC_BROWSER;
 		$version = $result[UAP_KEY_VERSION][$key];
 	} elseif( $find('CriOS', $key) ) {
-		$browser = 'Chrome';
+		$browser = Browser\CHROME;
 		$version = $result[UAP_KEY_VERSION][$key];
 	} elseif( $browser == 'AppleWebKit' ) {
 		if( $platform == 'Android' ) {
-			// $key = 0;
-			$browser = 'Android Browser';
+			$browser = Browser\ANDROID_BROWSER;
 		} elseif( strpos($platform, 'BB') === 0 ) {
-			$browser  = 'BlackBerry Browser';
-			$platform = 'BlackBerry';
+			$browser  = Browser\BLACKBERRY_BROWSER;
+			$platform = Platform\BLACKBERRY;
 		} elseif( $platform == 'BlackBerry' || $platform == 'PlayBook' ) {
-			$browser = 'BlackBerry Browser';
+			$browser  = Browser\BLACKBERRY_BROWSER;
 		} else {
 			$find('Safari', $key, $browser) || $find('TizenBrowser', $key, $browser);
 		}
@@ -176,7 +176,7 @@ function parse_user_agent( $u_agent = null ) {
 		$pKey = reset($pKey);
 
 		$platform = 'PlayStation ' . preg_replace('/\D/', '', $pKey);
-		$browser  = 'NetFront';
+		$browser  = Browser\NETFRONT;
 	}
 
 	return array( UAP_KEY_PLATFORM => $platform ?: null, UAP_KEY_BROWSER => $browser ?: null, UAP_KEY_VERSION => $version ?: null );
