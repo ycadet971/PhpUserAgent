@@ -1,5 +1,8 @@
 <?php
 
+use donatj\UserAgentParser\Browser;
+use donatj\UserAgentParser\Platform;
+
 const UAP_KEY_PLATFORM = 'platform';
 const UAP_KEY_BROWSER  = 'browser';
 const UAP_KEY_VERSION  = 'version';
@@ -8,6 +11,7 @@ const UAP_KEY_VERSION  = 'version';
  * Parses a user agent string into its important parts
  *
  * @author Jesse G. Donat <donatj@gmail.com>
+ * @license MIT
  * @link https://github.com/donatj/PhpUserAgent
  * @link http://donatstudios.com/PHP-Parser-HTTP_USER_AGENT
  * @param string|null $u_agent User agent string to parse or null. Uses $_SERVER['HTTP_USER_AGENT'] on NULL
