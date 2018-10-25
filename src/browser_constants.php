@@ -42,6 +42,7 @@ namespace donatj\UserAgentParser\Browser {
 	const VIVALDI             = 'Vivaldi';
 	const WGET                = 'Wget';
 	const WORDPRESS           = 'WordPress';
+	const YANDEX              = 'Yandex';
 	const YANDEXBOT           = 'YandexBot';
 }
 
